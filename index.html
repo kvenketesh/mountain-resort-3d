@@ -33,6 +33,9 @@
   <!-- Fullscreen Photo Flash Effect -->
   <div id="photo-flash"></div>
 
+  <!-- Zen Mode Floating Hint Pill (Shows briefly when controls hide) -->
+  <div id="zen-hint" class="zen-hint">Tap screen to restore controls</div>
+
   <!-- First-Person Telescope Viewfinder Overlay -->
   <div id="telescope-overlay">
     <div class="telescope-lens">
@@ -47,7 +50,7 @@
   <!-- User Interface Overlay -->
   <div id="ui-overlay">
     
-    <!-- Top Header Bar (Desktop single line / Mobile 2 clean non-overflowing rows) -->
+    <!-- Top Header Bar -->
     <header class="top-bar">
       <!-- Main Row: Brand + Primary Quick Actions -->
       <div class="top-row-main">
@@ -80,14 +83,14 @@
             <span>📷</span>
           </button>
 
-          <!-- Hide UI / Zen Mode -->
-          <button id="btn-toggle-ui" class="glass-btn icon-only" title="Hide UI (Press 'H')">
+          <!-- Hide UI / Zen Cinema Mode -->
+          <button id="btn-toggle-ui" class="glass-btn icon-only" title="Hide UI / Cinema View">
             <span>👁️</span>
           </button>
         </div>
       </div>
 
-      <!-- Secondary Row: Weather Toolbar + Tour & Customizer -->
+      <!-- Secondary Controls (Desktop right cluster / Hidden into mobile drawer) -->
       <div class="top-row-secondary interactive">
         <div class="weather-toolbar" title="Change Alpine Weather">
           <button class="weather-btn active" data-weather="sunny" title="Alpine Sunshine">☀️</button>
@@ -109,49 +112,69 @@
       </div>
     </header>
 
-    <!-- Bottom Narrative Panel & Camera Dock (Keeps middle 3D viewport 100% open) -->
-    <footer class="bottom-panel interactive">
+    <!-- Camera View Presets (Desktop right dock / Inside mobile drawer) -->
+    <aside class="view-presets interactive">
+      <button class="preset-btn active" data-view="director" title="Cinematic Director View">
+        <span>🎬</span>
+        <span class="tooltip">Story Angle</span>
+      </button>
+      <button class="preset-btn" data-view="breakfast" title="Lakeside Breakfast Deck">
+        <span>☕</span>
+        <span class="tooltip">Breakfast Deck</span>
+      </button>
+      <button class="preset-btn" data-view="pool" title="Adjoining Infinity Pool">
+        <span>🏊</span>
+        <span class="tooltip">Infinity Pool</span>
+      </button>
+      <button class="preset-btn" data-view="firepit" title="Sunken Campfire Lounge">
+        <span>🔥</span>
+        <span class="tooltip">Campfire Lounge</span>
+      </button>
+      <button class="preset-btn" data-view="gondola" title="Ride Alpine Cable Car">
+        <span>🚡</span>
+        <span class="tooltip">Ride Cable Car</span>
+      </button>
+      <button class="preset-btn" data-view="summit" title="Cloudcrest Mountain Summit">
+        <span>⛰️</span>
+        <span class="tooltip">Mountain Summit</span>
+      </button>
+      <button class="preset-btn" data-view="bedroom" title="Master Bedroom & Fireplace">
+        <span>🛏️</span>
+        <span class="tooltip">Cozy Bedroom</span>
+      </button>
+      <button class="preset-btn" data-view="drone" title="Aerial Drone Perspective">
+        <span>🦅</span>
+        <span class="tooltip">Aerial Drone</span>
+      </button>
+    </aside>
+
+    <!-- Bottom Narrative Panel (Desktop full panel / Mobile slide-up drawer) -->
+    <footer id="bottom-panel" class="bottom-panel interactive">
       
-      <!-- Camera View Presets (Desktop right dock / Mobile bottom strip above controls) -->
-      <aside class="view-presets interactive">
-        <button class="preset-btn active" data-view="director" title="Cinematic Director View">
-          <span>🎬</span>
-          <span class="tooltip">Story Angle</span>
+      <!-- Mobile Drawer Drag Handle -->
+      <div id="drawer-handle-bar" class="drawer-handle-bar">
+        <div class="drawer-handle-pill"></div>
+        <button id="btn-close-drawer" class="drawer-close-btn" title="Close Drawer">✕</button>
+      </div>
+
+      <!-- Mobile In-Drawer Weather & Style Bar -->
+      <div class="mobile-drawer-tools">
+        <div class="weather-toolbar">
+          <button class="weather-btn active" data-weather="sunny">☀️</button>
+          <button class="weather-btn" data-weather="mist">🌫️</button>
+          <button class="weather-btn" data-weather="rain">🌧️</button>
+          <button class="weather-btn" data-weather="snow">❄️</button>
+        </div>
+        <button id="btn-names-mobile" class="glass-btn" style="height: 34px; padding: 4px 10px; font-size: 0.75rem;">
+          <span>💑</span>
+          <span>Outfits</span>
         </button>
-        <button class="preset-btn" data-view="breakfast" title="Lakeside Breakfast Deck">
-          <span>☕</span>
-          <span class="tooltip">Breakfast Deck</span>
-        </button>
-        <button class="preset-btn" data-view="pool" title="Adjoining Infinity Pool">
-          <span>🏊</span>
-          <span class="tooltip">Infinity Pool</span>
-        </button>
-        <button class="preset-btn" data-view="firepit" title="Sunken Campfire Lounge">
-          <span>🔥</span>
-          <span class="tooltip">Campfire Lounge</span>
-        </button>
-        <button class="preset-btn" data-view="gondola" title="Ride Alpine Cable Car">
-          <span>🚡</span>
-          <span class="tooltip">Ride Cable Car</span>
-        </button>
-        <button class="preset-btn" data-view="summit" title="Cloudcrest Mountain Summit">
-          <span>⛰️</span>
-          <span class="tooltip">Mountain Summit</span>
-        </button>
-        <button class="preset-btn" data-view="bedroom" title="Master Bedroom & Fireplace">
-          <span>🛏️</span>
-          <span class="tooltip">Cozy Bedroom</span>
-        </button>
-        <button class="preset-btn" data-view="drone" title="Aerial Drone Perspective">
-          <span>🦅</span>
-          <span class="tooltip">Aerial Drone</span>
-        </button>
-      </aside>
+      </div>
 
       <!-- Interactive Couple Activities Bar -->
       <div id="activities-bar" class="activities-bar"></div>
 
-      <!-- 4 Chapter Navigation Tabs (44x44px minimum touch targets on mobile) -->
+      <!-- 4 Chapter Navigation Tabs -->
       <nav class="chapter-nav">
         <button class="chapter-tab active" data-chapter="1">
           <span class="icon">🌅</span>
@@ -171,9 +194,8 @@
         </button>
       </nav>
 
-      <!-- Main Story Narrative Card (Collapsible on Mobile) -->
+      <!-- Main Story Narrative Card -->
       <div id="story-card" class="story-card">
-        <div class="story-card-handle"></div>
         <div class="story-content">
           <div class="story-header">
             <span id="story-badge" class="chapter-badge">Morning Awakening</span>
@@ -202,6 +224,22 @@
       </div>
 
     </footer>
+
+    <!-- ULTRA-COMPACT MOBILE FLOATING BAR (Takes only 46px height on mobile!) -->
+    <div id="mobile-mini-bar" class="mobile-mini-bar interactive">
+      <button id="btn-mobile-expand" class="mobile-ch-pill" title="Tap to view story & activities">
+        <span id="mobile-pill-icon">🌅</span>
+        <span id="mobile-pill-name">1. Breakfast</span>
+        <span class="chevron-arrow">▲</span>
+      </button>
+
+      <div class="mobile-mini-actions">
+        <button id="btn-mob-prev" class="mob-btn" title="Previous Chapter">◀</button>
+        <button id="btn-mob-next" class="mob-btn" title="Next Chapter">▶</button>
+        <button id="btn-mob-tour" class="mob-btn" title="Auto Tour">🎬</button>
+        <button id="btn-mob-zen" class="mob-btn zen" title="Watch 100% Fullscreen Scene">👁️</button>
+      </div>
+    </div>
 
   </div>
 

@@ -1,7 +1,7 @@
 /* ==========================================================================
    ALPINESCAPE: A COUPLE'S MOUNTAIN RESORT EXPERIENCE
    Styling for Luxury 3D Interactive Web Application
-   Fully Optimized for Desktop, Tablet, and Mobile Viewports (100dvh)
+   Fully Optimized for Desktop & Ultra-Clean Cinema-First Mobile (100dvh)
    ========================================================================== */
 
 :root {
@@ -10,8 +10,8 @@
   --accent: #38bdf8;
   --accent-glow: rgba(56, 189, 248, 0.4);
   --bg-dark: rgba(15, 23, 42, 0.75);
-  --bg-card: rgba(30, 41, 59, 0.75);
-  --bg-glass: rgba(15, 23, 42, 0.72);
+  --bg-card: rgba(30, 41, 59, 0.8);
+  --bg-glass: rgba(15, 23, 42, 0.74);
   --border-glass: rgba(255, 255, 255, 0.14);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
@@ -80,8 +80,33 @@ body, html {
   pointer-events: auto;
 }
 
+/* Floating Zen Mode Hint Pill */
+.zen-hint {
+  position: absolute;
+  top: calc(20px + var(--safe-top));
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  color: #fbbf24;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.zen-hint.show {
+  opacity: 1;
+}
+
 /* ==========================================================================
-   TOP BAR: DESKTOP SINGLE ROW / MOBILE TWO CLEAN ROWS
+   TOP BAR: DESKTOP SINGLE ROW
    ========================================================================== */
 .top-bar {
   display: flex;
@@ -89,6 +114,7 @@ body, html {
   align-items: center;
   gap: 16px;
   width: 100%;
+  z-index: 15;
 }
 
 .top-row-main {
@@ -274,8 +300,8 @@ body, html {
 
 /* ==========================================================================
    CAMERA & VIEW PRESET DOCK
-   Desktop: Fixed floating dock on right side
-   Mobile: Horizontal strip attached to bottom panel
+   Desktop: Fixed dock on right side
+   Mobile: Inside the slide-up drawer
    ========================================================================== */
 .view-presets {
   position: fixed;
@@ -345,7 +371,7 @@ body, html {
 }
 
 /* ==========================================================================
-   BOTTOM EXPERIENCE CARD & TIMELINE
+   BOTTOM NARRATIVE PANEL (Desktop Panel / Mobile Slide-Up Drawer)
    ========================================================================== */
 .bottom-panel {
   display: flex;
@@ -355,6 +381,15 @@ body, html {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
+  z-index: 20;
+}
+
+.drawer-handle-bar {
+  display: none;
+}
+
+.mobile-drawer-tools {
+  display: none;
 }
 
 /* Activities Action Bar */
@@ -451,15 +486,6 @@ body, html {
   transition: all 0.35s ease;
   position: relative;
   overflow: hidden;
-}
-
-.story-card-handle {
-  display: none;
-  width: 36px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  margin: 0 auto 6px auto;
 }
 
 .story-card::before {
@@ -584,6 +610,11 @@ body, html {
   min-width: 60px;
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+
+/* Mobile Mini Floating Bar (Hidden on desktop) */
+.mobile-mini-bar {
+  display: none;
 }
 
 /* ==========================================================================
@@ -1022,18 +1053,19 @@ body, html {
 
 /* ==========================================================================
    MOBILE VIEWPORT ENHANCEMENTS (< 768px)
-   Ultra-polished, clean, thumb-friendly layout with ZERO OVERFLOW
+   "CINEMA-FIRST": 92% OF SCREEN IS PURE 3D SCENERY
+   Zero Obstructions In The Middle!
    ========================================================================== */
 @media (max-width: 768px) {
   #ui-overlay {
-    padding: calc(8px + var(--safe-top)) 10px calc(8px + var(--safe-bottom)) 10px;
+    padding: calc(10px + var(--safe-top)) 12px calc(8px + var(--safe-bottom)) 12px;
   }
 
-  /* Top Bar Mobile Restructuring: 2 neat rows, zero horizontal scroll */
+  /* 1. Slim Single-Row Top Bar on Mobile */
   .top-bar {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
   }
 
@@ -1044,8 +1076,13 @@ body, html {
     width: 100%;
   }
 
+  /* Hide secondary row from top, tucked into bottom drawer */
+  .top-row-secondary {
+    display: none !important;
+  }
+
   .brand-badge {
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 12px;
   }
 
@@ -1060,29 +1097,7 @@ body, html {
   .primary-controls {
     display: flex;
     align-items: center;
-    gap: 5px;
-  }
-
-  .top-row-secondary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
     gap: 6px;
-  }
-
-  .weather-toolbar {
-    padding: 2px;
-    border-radius: 10px;
-    gap: 2px;
-  }
-
-  .weather-btn {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    font-size: 0.9rem;
-    border-radius: 8px;
   }
 
   .glass-btn {
@@ -1098,7 +1113,7 @@ body, html {
     min-width: 36px;
   }
 
-  /* View Presets Dock on Mobile: Placed nicely right above Chapter Tabs */
+  /* 2. Camera presets dock moved inside drawer on mobile */
   .view-presets {
     position: static;
     transform: none;
@@ -1131,15 +1146,146 @@ body, html {
     display: none;
   }
 
-  /* Bottom Panel Mobile */
-  .bottom-panel {
-    gap: 6px;
+  /* 3. ULTRA-COMPACT FLOATING BOTTOM MINI-BAR (ONLY 48px height!) */
+  .mobile-mini-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    padding: 5px 8px;
+    border-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     width: 100%;
+    max-width: 370px;
+    margin: 0 auto;
+    z-index: 30;
   }
 
-  /* Chapter tabs on mobile: Apple-compliant 44x44px touch targets */
+  .mobile-ch-pill {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .chevron-arrow {
+    font-size: 0.65rem;
+    color: #cbd5e1;
+    transition: transform 0.3s ease;
+  }
+
+  .mobile-mini-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .mob-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+  }
+
+  .mob-btn:active {
+    background: rgba(245, 158, 11, 0.3);
+    border-color: var(--primary);
+  }
+
+  .mob-btn.zen {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: var(--accent);
+  }
+
+  /* 4. THE BOTTOM PANEL BECOMES AN ELEGANT SLIDE-UP DRAWER ON MOBILE */
+  /* Hidden by default so 92% of screen is PURE 3D SCENERY! */
+  .bottom-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 72dvh;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 24px 24px 0 0;
+    padding: 12px 14px calc(14px + var(--safe-bottom)) 14px;
+    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(105%); /* Tucked down by default! */
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    z-index: 50;
+    gap: 10px;
+  }
+
+  .bottom-panel.drawer-open {
+    transform: translateY(0); /* Slides up smoothly! */
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .drawer-handle-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 4px 4px 4px;
+  }
+
+  .drawer-handle-pill {
+    width: 44px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 5px;
+    margin: 0 auto;
+  }
+
+  .drawer-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #94a3b8;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .mobile-drawer-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 2px;
+  }
+
   .chapter-nav {
-    padding: 3px 4px;
+    padding: 4px;
     gap: 4px;
   }
 
@@ -1157,34 +1303,20 @@ body, html {
     display: none;
   }
 
-  /* Story Card on Mobile: Collapsible / Compact Drawer */
-  .story-card-handle {
-    display: block;
-  }
-
   .story-card {
     grid-template-columns: 1fr;
     gap: 8px;
-    padding: 10px 14px;
+    padding: 12px 14px;
     border-radius: 16px;
-    cursor: pointer;
-  }
-
-  .story-card.collapsed p {
-    display: none;
-  }
-
-  .story-card.collapsed .activities-bar {
-    display: none;
   }
 
   .story-card h2 {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
 
   .story-card p {
-    font-size: 0.8rem;
-    line-height: 1.35;
+    font-size: 0.85rem;
+    line-height: 1.4;
   }
 
   .story-actions {
@@ -1192,29 +1324,19 @@ body, html {
   }
 
   .primary-btn {
-    padding: 7px 14px;
-    font-size: 0.78rem;
+    padding: 8px 16px;
+    font-size: 0.8rem;
     border-radius: 10px;
   }
 
   .activities-bar {
-    gap: 4px;
+    gap: 5px;
   }
 
   .activity-btn {
-    height: 28px;
-    padding: 4px 9px;
-    font-size: 0.7rem;
-  }
-
-  /* Time scrubber */
-  .time-scrubber {
-    padding: 0 4px;
-  }
-
-  .time-slider::-webkit-slider-thumb {
-    width: 22px;
-    height: 22px;
+    height: 30px;
+    padding: 4px 10px;
+    font-size: 0.72rem;
   }
 
   /* Modals on Mobile */
@@ -1225,10 +1347,6 @@ body, html {
 
   .polaroid-frame {
     padding: 10px 10px 20px 10px;
-  }
-
-  .polaroid-caption {
-    font-size: 0.95rem;
   }
 
   .custom-card {

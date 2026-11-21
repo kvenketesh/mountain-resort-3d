@@ -377,6 +377,14 @@ class StoryTimeline {
     if (timeEl) timeEl.innerText = ch.timeStr;
     if (titleEl) titleEl.innerText = ch.title;
     if (descEl) descEl.innerText = ch.description;
+
+    // Mobile Mini Bar Synch
+    const mobIcon = document.getElementById('mobile-pill-icon');
+    const mobName = document.getElementById('mobile-pill-name');
+    const icons = ['🌅', '⛰️', '✨', '🛏️'];
+    const names = ['1. Breakfast', '2. Summit', '3. Starry Pool', '4. Cozy Bed'];
+    if (mobIcon) mobIcon.innerText = icons[this.currentChapter - 1];
+    if (mobName) mobName.innerText = names[this.currentChapter - 1];
   }
 
   updateHotspots(hotspotList) {

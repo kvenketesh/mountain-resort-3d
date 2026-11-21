@@ -415,41 +415,116 @@ class AlpineApp {
       });
     }
 
-    // Mobile Story Card Expand / Collapse Toggle
-    const storyCard = document.getElementById('story-card');
-    const handle = document.querySelector('.story-card-handle');
-    if (storyCard) {
-      if (window.innerWidth <= 768) {
-        storyCard.classList.add('collapsed');
-      }
-      if (handle) {
-        handle.addEventListener('click', (e) => {
-          e.stopPropagation();
-          storyCard.classList.toggle('collapsed');
-        });
-      }
-      storyCard.addEventListener('click', (e) => {
-        // Only toggle if clicked on card itself and not on buttons
-        if (e.target.closest('button')) return;
-        if (window.innerWidth <= 768) {
-          storyCard.classList.toggle('collapsed');
-        }
+    // Mobile Drawer Controls
+    const bottomPanel = document.getElementById('bottom-panel');
+    const mobileExpandBtn = document.getElementById('btn-mobile-expand');
+    const closeDrawerBtn = document.getElementById('btn-close-drawer');
+
+    if (mobileExpandBtn && bottomPanel) {
+      mobileExpandBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bottomPanel.classList.toggle('drawer-open');
       });
     }
+
+    if (closeDrawerBtn && bottomPanel) {
+      closeDrawerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bottomPanel.classList.remove('drawer-open');
+      });
+    }
+
+    // Mobile Mini Bar Action Buttons
+    const mobPrev = document.getElementById('btn-mob-prev');
+    if (mobPrev) {
+      mobPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.timeline.prevChapter();
+      });
+    }
+
+    const mobNext = document.getElementById('btn-mob-next');
+    if (mobNext) {
+      mobNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.timeline.nextChapter();
+      });
+    }
+
+    const mobTour = document.getElementById('btn-mob-tour');
+    if (mobTour) {
+      mobTour.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isRunning = this.timeline.toggleAutoTour();
+        mobTour.classList.toggle('active', isRunning);
+        if (tourBtn) tourBtn.classList.toggle('active', isRunning);
+      });
+    }
+
+    const mobZen = document.getElementById('btn-mob-zen');
+    if (mobZen) {
+      mobZen.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleZenMode();
+      });
+    }
+
+    const mobNames = document.getElementById('btn-names-mobile');
+    if (mobNames && namesModal) {
+      mobNames.addEventListener('click', (e) => {
+        e.stopPropagation();
+        namesModal.classList.add('open');
+      });
+    }
+
+    // Tap on Canvas Container to toggle Zen Mode / Close Mobile Drawer
+    let pointerDownTime = 0;
+    this.container.addEventListener('pointerdown', () => {
+      pointerDownTime = Date.now();
+    });
+
+    this.container.addEventListener('pointerup', (e) => {
+      // If was a quick tap (< 250ms) and not a drag
+      if (Date.now() - pointerDownTime < 250) {
+        if (bottomPanel && bottomPanel.classList.contains('drawer-open')) {
+          bottomPanel.classList.remove('drawer-open');
+        } else {
+          this.toggleZenMode();
+        }
+      }
+    });
 
     // UI Hide / Fullscreen
     const toggleUiBtn = document.getElementById('btn-toggle-ui');
     if (toggleUiBtn) {
       toggleUiBtn.addEventListener('click', () => {
-        document.getElementById('ui-overlay').classList.toggle('hidden');
+        this.toggleZenMode();
       });
     }
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'h' || e.key === 'H') {
-        document.getElementById('ui-overlay').classList.toggle('hidden');
+        this.toggleZenMode();
       }
     });
+  }
+
+  toggleZenMode() {
+    const overlay = document.getElementById('ui-overlay');
+    const hint = document.getElementById('zen-hint');
+    const bottomPanel = document.getElementById('bottom-panel');
+
+    if (bottomPanel) bottomPanel.classList.remove('drawer-open');
+
+    if (overlay) {
+      const isHidden = overlay.classList.toggle('hidden');
+      if (hint && isHidden) {
+        hint.classList.add('show');
+        setTimeout(() => {
+          hint.classList.remove('show');
+        }, 2200);
+      }
+    }
   }
 
   setCameraPreset(preset) {
