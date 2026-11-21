@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Alpine Escape — A Couple's Mountain, Lake & Resort Journey</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Application Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Core Libraries from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- 3D WebGL Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- Dynamic 3D Projected Hotspots Layer -->
+  <div id="hotspots-layer"></div>
+
+  <!-- Fullscreen Photo Flash Effect -->
+  <div id="photo-flash"></div>
+
+  <!-- First-Person Telescope Viewfinder Overlay -->
+  <div id="telescope-overlay">
+    <div class="telescope-lens">
+      <div class="telescope-crosshair"></div>
+      <div class="telescope-hud">
+        <span>Cloudcrest Summit · 7,200 FT · Optical Zoom 24x</span>
+      </div>
+      <button id="btn-close-telescope" class="glass-btn close-telescope-btn">✕ Exit Telescope</button>
+    </div>
+  </div>
+
+  <!-- User Interface Overlay -->
+  <div id="ui-overlay">
+    
+    <!-- Top Header Bar -->
+    <header class="top-bar">
+      <div class="brand-badge interactive">
+        <h1>ALPINESCAPE</h1>
+        <div class="subtitle">
+          <span class="dot"></span>
+          <span>A Couple's Mountain Sanctuary</span>
+        </div>
+      </div>
+
+      <!-- Dynamic Weather Toolbar -->
+      <div class="weather-toolbar interactive" title="Change Alpine Weather">
+        <button class="weather-btn active" data-weather="sunny" title="Alpine Sunshine">☀️</button>
+        <button class="weather-btn" data-weather="mist" title="Lake Mist & Fog">🌫️</button>
+        <button class="weather-btn" data-weather="rain" title="Mountain Rain">🌧️</button>
+        <button class="weather-btn" data-weather="snow" title="Winter Snow Flurries">❄️</button>
+      </div>
+
+      <div class="top-controls interactive">
+        <!-- Audio Button with EQ bars -->
+        <button id="btn-audio" class="glass-btn" title="Toggle Procedural Nature Sounds & Chords">
+          <div class="eq-bars">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+          <span>Soundscape</span>
+        </button>
+
+        <!-- Auto Tour -->
+        <button id="btn-tour" class="glass-btn" title="Autoplay cinematic experience">
+          <span>🎬</span>
+          <span class="text">Auto Tour</span>
+        </button>
+
+        <!-- Vacation Scrapbook Photo Album -->
+        <button id="btn-album" class="glass-btn" title="View Vacation Scrapbook">
+          <span>📖</span>
+          <span>Album</span>
+          <span id="album-count" class="badge-counter">0</span>
+        </button>
+
+        <!-- Customize Couple Names & Outfits -->
+        <button id="btn-names" class="glass-btn icon-only" title="Customize Couple Names & Outfits">
+          <span>💑</span>
+        </button>
+
+        <!-- Photo Snapshot Button -->
+        <button id="btn-photo" class="glass-btn icon-only" title="Capture Memory Photo">
+          <span>📷</span>
+        </button>
+
+        <!-- Hide UI / Zen Mode -->
+        <button id="btn-toggle-ui" class="glass-btn icon-only" title="Hide UI (Press 'H')">
+          <span>👁️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Right Side Camera View Presets -->
+    <aside class="view-presets interactive">
+      <button class="preset-btn active" data-view="director" title="Cinematic Director View">
+        <span>🎬</span>
+        <span class="tooltip">Story Angle</span>
+      </button>
+      <button class="preset-btn" data-view="breakfast" title="Lakeside Breakfast Deck">
+        <span>☕</span>
+        <span class="tooltip">Breakfast Deck</span>
+      </button>
+      <button class="preset-btn" data-view="pool" title="Adjoining Infinity Pool">
+        <span>🏊</span>
+        <span class="tooltip">Infinity Pool</span>
+      </button>
+      <button class="preset-btn" data-view="firepit" title="Sunken Campfire Lounge">
+        <span>🔥</span>
+        <span class="tooltip">Campfire Lounge</span>
+      </button>
+      <button class="preset-btn" data-view="gondola" title="Ride Alpine Cable Car">
+        <span>🚡</span>
+        <span class="tooltip">Ride Cable Car</span>
+      </button>
+      <button class="preset-btn" data-view="summit" title="Cloudcrest Mountain Summit">
+        <span>⛰️</span>
+        <span class="tooltip">Mountain Summit</span>
+      </button>
+      <button class="preset-btn" data-view="bedroom" title="Master Bedroom & Fireplace">
+        <span>🛏️</span>
+        <span class="tooltip">Cozy Bedroom</span>
+      </button>
+      <button class="preset-btn" data-view="drone" title="Aerial Drone Perspective">
+        <span>🦅</span>
+        <span class="tooltip">Aerial Drone</span>
+      </button>
+    </aside>
+
+    <!-- Bottom Narrative Panel & Time Controller -->
+    <footer class="bottom-panel interactive">
+      
+      <!-- Interactive Couple Activities Bar -->
+      <div id="activities-bar" class="activities-bar"></div>
+
+      <!-- 4 Chapter Navigation Tabs -->
+      <nav class="chapter-nav">
+        <button class="chapter-tab active" data-chapter="1">
+          <span class="icon">🌅</span>
+          <span class="title">1. Morning Breakfast</span>
+        </button>
+        <button class="chapter-tab" data-chapter="2">
+          <span class="icon">⛰️</span>
+          <span class="title">2. Mountain Summit</span>
+        </button>
+        <button class="chapter-tab" data-chapter="3">
+          <span class="icon">✨</span>
+          <span class="title">3. Starry Pool</span>
+        </button>
+        <button class="chapter-tab" data-chapter="4">
+          <span class="icon">🛏️</span>
+          <span class="title">4. Bed & Fireplace</span>
+        </button>
+      </nav>
+
+      <!-- Main Story Narrative Card -->
+      <div class="story-card">
+        <div class="story-content">
+          <div class="story-header">
+            <span id="story-badge" class="chapter-badge">Morning Awakening</span>
+            <span id="story-time" class="time-badge">07:30 AM · Golden Hour</span>
+          </div>
+          <h2 id="story-title">Lakeside Breakfast & Morning Glow</h2>
+          <p id="story-desc">
+            As golden dawn mist drifts across the pristine alpine lake, Ethan & Maya wake up to fresh mountain air. Sitting on the sunlit resort deck right beside the crystal-clear infinity pool, they share steaming espresso, warm croissants, and quiet smiles as the mountains awaken.
+          </p>
+        </div>
+
+        <div class="story-actions">
+          <button id="btn-next-chapter" class="primary-btn">
+            <span>Next Chapter</span>
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Time of Day Dynamic Scrub Bar -->
+      <div class="time-scrubber">
+        <span style="font-size: 0.9rem;">☀️</span>
+        <input id="time-slider" type="range" class="time-slider" min="5.0" max="24.0" step="0.1" value="7.5">
+        <span style="font-size: 0.9rem;">🌙</span>
+        <span id="time-display" class="time-label">07:30 AM</span>
+      </div>
+
+    </footer>
+
+  </div>
+
+  <!-- Vacation Memories Scrapbook Modal -->
+  <div id="album-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="album-header">
+        <h3>📖 Our Alpine Vacation Scrapbook</h3>
+        <button id="btn-close-album" class="glass-btn">✕ Close</button>
+      </div>
+      <div id="album-grid" class="album-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Polaroid Souvenir Snapshot Modal -->
+  <div id="photo-modal" class="modal-backdrop">
+    <div class="polaroid-frame">
+      <img id="polaroid-img" class="polaroid-img" alt="Captured Mountain Resort Memory">
+      <div class="polaroid-caption" id="polaroid-caption">"Lakeside Breakfast" — Ethan & Maya</div>
+      <div class="polaroid-meta" id="polaroid-meta">Alpine Luxury Lake Resort · 07:30 AM</div>
+      <div class="modal-actions">
+        <button id="btn-download-photo" class="primary-btn">
+          <span>💾 Download Postcard</span>
+        </button>
+        <button id="btn-close-photo" class="glass-btn">
+          <span>Close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customize Couple Names & Outfits Modal -->
+  <div id="names-modal" class="modal-backdrop">
+    <div class="custom-card">
+      <h3>Personalize the Couple</h3>
+      <p>Customize partner names and wardrobe themes for this romantic getaway:</p>
+      
+      <div class="input-group">
+        <label for="input-p1">Partner 1</label>
+        <input type="text" id="input-p1" value="Ethan" maxlength="20">
+      </div>
+
+      <div class="input-group">
+        <label for="input-p2">Partner 2</label>
+        <input type="text" id="input-p2" value="Maya" maxlength="20">
+      </div>
+
+      <div class="input-group">
+        <label>Wardrobe Theme</label>
+        <div class="outfit-options">
+          <label class="outfit-label">
+            <input type="radio" name="outfit" value="coral_navy" checked>
+            <span>Sunset Coral & Navy</span>
+          </label>
+          <label class="outfit-label">
+            <input type="radio" name="outfit" value="emerald">
+            <span>Alpine Emerald & Sage</span>
+          </label>
+          <label class="outfit-label">
+            <input type="radio" name="outfit" value="sapphire">
+            <span>Royal Sapphire & Rose</span>
+          </label>
+          <label class="outfit-label">
+            <input type="radio" name="outfit" value="midnight">
+            <span>Midnight Slate & Pearl</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="justify-content: flex-end; margin-top: 16px;">
+        <button id="btn-cancel-names" class="glass-btn">Cancel</button>
+        <button id="btn-save-names" class="primary-btn">Save Experience</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Luxury Introduction Loading Screen -->
+  <div id="loader-screen">
+    <div class="loader-emblem">
+      <div class="loader-ring"></div>
+      <span style="font-size: 2rem;">🏔️</span>
+    </div>
+    <div class="loader-text">Awakening Mountain Sanctuary...</div>
+    <div class="loader-bar-bg">
+      <div class="loader-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
