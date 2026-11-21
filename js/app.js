@@ -51,8 +51,9 @@ class AlpineApp {
       powerPreference: "high-performance",
       preserveDrawingBuffer: true
     });
+    const isMobile = window.innerWidth <= 768;
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -60,6 +61,7 @@ class AlpineApp {
 
     this.container.appendChild(this.renderer.domElement);
 
+    // 4. OrbitControls with optimized touch bindings
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
@@ -67,6 +69,12 @@ class AlpineApp {
     this.controls.minDistance = 2.0;
     this.controls.maxDistance = 220;
     this.controls.target.set(3.8, 2.8, -1.2);
+
+    // Mobile touch gestures: 1 finger rotate, 2 fingers pinch zoom & pan
+    this.controls.touches = {
+      ONE: THREE.TOUCH.ROTATE,
+      TWO: THREE.TOUCH.DOLLY_PAN
+    };
   }
 
   buildScene() {
@@ -404,6 +412,28 @@ class AlpineApp {
     if (closeTeleBtn) {
       closeTeleBtn.addEventListener('click', () => {
         this.timeline.toggleTelescopeOverlay(false);
+      });
+    }
+
+    // Mobile Story Card Expand / Collapse Toggle
+    const storyCard = document.getElementById('story-card');
+    const handle = document.querySelector('.story-card-handle');
+    if (storyCard) {
+      if (window.innerWidth <= 768) {
+        storyCard.classList.add('collapsed');
+      }
+      if (handle) {
+        handle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          storyCard.classList.toggle('collapsed');
+        });
+      }
+      storyCard.addEventListener('click', (e) => {
+        // Only toggle if clicked on card itself and not on buttons
+        if (e.target.closest('button')) return;
+        if (window.innerWidth <= 768) {
+          storyCard.classList.toggle('collapsed');
+        }
       });
     }
 

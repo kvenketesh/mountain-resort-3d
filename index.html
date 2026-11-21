@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#050b14">
   <title>Alpine Escape — A Couple's Mountain, Lake & Resort Journey</title>
   
   <!-- Google Fonts -->
@@ -37,7 +40,7 @@
       <div class="telescope-hud">
         <span>Cloudcrest Summit · 7,200 FT · Optical Zoom 24x</span>
       </div>
-      <button id="btn-close-telescope" class="glass-btn close-telescope-btn">✕ Exit Telescope</button>
+      <button id="btn-close-telescope" class="glass-btn close-telescope-btn">✕ Exit</button>
     </div>
   </div>
 
@@ -50,7 +53,7 @@
         <h1>ALPINESCAPE</h1>
         <div class="subtitle">
           <span class="dot"></span>
-          <span>A Couple's Mountain Sanctuary</span>
+          <span>Sanctuary</span>
         </div>
       </div>
 
@@ -76,7 +79,7 @@
         <!-- Auto Tour -->
         <button id="btn-tour" class="glass-btn" title="Autoplay cinematic experience">
           <span>🎬</span>
-          <span class="text">Auto Tour</span>
+          <span class="text">Tour</span>
         </button>
 
         <!-- Vacation Scrapbook Photo Album -->
@@ -103,7 +106,7 @@
       </div>
     </header>
 
-    <!-- Right Side Camera View Presets -->
+    <!-- Camera View Presets (Desktop right dock / Mobile bottom strip) -->
     <aside class="view-presets interactive">
       <button class="preset-btn active" data-view="director" title="Cinematic Director View">
         <span>🎬</span>
@@ -165,8 +168,9 @@
         </button>
       </nav>
 
-      <!-- Main Story Narrative Card -->
-      <div class="story-card">
+      <!-- Main Story Narrative Card (Collapsible on Mobile) -->
+      <div id="story-card" class="story-card">
+        <div class="story-card-handle"></div>
         <div class="story-content">
           <div class="story-header">
             <span id="story-badge" class="chapter-badge">Morning Awakening</span>
@@ -180,7 +184,7 @@
 
         <div class="story-actions">
           <button id="btn-next-chapter" class="primary-btn">
-            <span>Next Chapter</span>
+            <span>Next</span>
             <span>→</span>
           </button>
         </div>
@@ -188,9 +192,9 @@
 
       <!-- Time of Day Dynamic Scrub Bar -->
       <div class="time-scrubber">
-        <span style="font-size: 0.9rem;">☀️</span>
+        <span style="font-size: 0.85rem;">☀️</span>
         <input id="time-slider" type="range" class="time-slider" min="5.0" max="24.0" step="0.1" value="7.5">
-        <span style="font-size: 0.9rem;">🌙</span>
+        <span style="font-size: 0.85rem;">🌙</span>
         <span id="time-display" class="time-label">07:30 AM</span>
       </div>
 
@@ -203,7 +207,7 @@
     <div class="modal-card">
       <div class="album-header">
         <h3>📖 Our Alpine Vacation Scrapbook</h3>
-        <button id="btn-close-album" class="glass-btn">✕ Close</button>
+        <button id="btn-close-album" class="glass-btn">✕</button>
       </div>
       <div id="album-grid" class="album-grid">
         <!-- Rendered dynamically -->
@@ -219,7 +223,7 @@
       <div class="polaroid-meta" id="polaroid-meta">Alpine Luxury Lake Resort · 07:30 AM</div>
       <div class="modal-actions">
         <button id="btn-download-photo" class="primary-btn">
-          <span>💾 Download Postcard</span>
+          <span>💾 Download</span>
         </button>
         <button id="btn-close-photo" class="glass-btn">
           <span>Close</span>
@@ -249,26 +253,26 @@
         <div class="outfit-options">
           <label class="outfit-label">
             <input type="radio" name="outfit" value="coral_navy" checked>
-            <span>Sunset Coral & Navy</span>
+            <span>Coral & Navy</span>
           </label>
           <label class="outfit-label">
             <input type="radio" name="outfit" value="emerald">
-            <span>Alpine Emerald & Sage</span>
+            <span>Emerald & Sage</span>
           </label>
           <label class="outfit-label">
             <input type="radio" name="outfit" value="sapphire">
-            <span>Royal Sapphire & Rose</span>
+            <span>Sapphire & Rose</span>
           </label>
           <label class="outfit-label">
             <input type="radio" name="outfit" value="midnight">
-            <span>Midnight Slate & Pearl</span>
+            <span>Midnight Slate</span>
           </label>
         </div>
       </div>
 
-      <div class="modal-actions" style="justify-content: flex-end; margin-top: 16px;">
+      <div class="modal-actions" style="justify-content: flex-end; margin-top: 14px;">
         <button id="btn-cancel-names" class="glass-btn">Cancel</button>
-        <button id="btn-save-names" class="primary-btn">Save Experience</button>
+        <button id="btn-save-names" class="primary-btn">Save</button>
       </div>
     </div>
   </div>
@@ -277,7 +281,7 @@
   <div id="loader-screen">
     <div class="loader-emblem">
       <div class="loader-ring"></div>
-      <span style="font-size: 2rem;">🏔️</span>
+      <span style="font-size: 1.8rem;">🏔️</span>
     </div>
     <div class="loader-text">Awakening Mountain Sanctuary...</div>
     <div class="loader-bar-bg">
